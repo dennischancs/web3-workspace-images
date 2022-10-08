@@ -9,6 +9,21 @@ web3-workspace-images:ubuntu-22.04           base image
 web3-workspace-images:full-stack             frontend/chainend/etc
 
 
+# usage
+```shell
+docker run --shm-size=512m -d -p 6901:6901 -e VNC_PW=password --name web3-dev dennischancs/web3-workspace-images:ubuntu-22.04
+```
+
+The container is now accessible via a browser : `https://<IP>:6901`
+User : `kasm_user`
+Password: `password`
+
+# China Usage
+## replace sources
+```shell
+sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+```
+
 # PS
 ```shell
 # ### 以下会议、办公软件，只安装在宿主机，不安装在docker开发环境的镜像里

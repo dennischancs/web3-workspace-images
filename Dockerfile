@@ -1,63 +1,18 @@
-# 2022-10-8 
-ARG BASE_TAG="1.11.0-rolling"
-ARG BASE_IMAGE="core-ubuntu-jammy"
-FROM kasmweb/$BASE_IMAGE:$BASE_TAG
+# Full stack for web3
+FROM dennischancs/web3-workspace-images:ubuntu-22.04
 
 USER root
 
-### Envrionment config
-ENV HOME /home/kasm-default-profile
-ENV STARTUPDIR /dockerstartup
-WORKDIR $HOME
-ENV DEBIAN_FRONTEND noninteractive
-ENV KASM_RX_HOME $STARTUPDIR/kasmrx
-ENV INST_SCRIPTS $STARTUPDIR/install
-
-
 ######### Customize Container Here ###########
+# 1. 换国内源
+RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
-### Building an Image with sudo
-# RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-# add sudo command
-RUN apt-get update \
-    && apt-get install -y sudo \
-    && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
-    && rm -rf /var/lib/apt/list/*
-
-# Install Tools
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/tools/install_tools_deluxe.sh | bash
-# Install Utilities
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/misc/install_tools.sh | bash
-
-# -- 浏览器 --
-# Install Edge Browser
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/edge/install_edge.sh | bash
-# Install Brave Browser
-# RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/brave/install_brave.sh | bash
-# Install Tor Browser
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/torbrowser/install_torbrowser.sh | bash
-
-
-# ### docker容器中只有开发环境、远程工具 ---
-# -- code --
-# Install Sublime Text
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/sublime_text/install_sublime_text.sh | bash
-
-# Install Visual Studio Code
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/vs_code/install_vs_code.sh | bash
-
-# Install Postman
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/postman/install_postman.sh | bash
-
-# -- remote --
-# Install Remmina
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/remmina/install_remmina.sh  | bash
-
-# Install Ansible
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/ansible/install_ansible.sh  | bash
-
-# Install Terraform
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/terraform/install_terraform.sh  | bash
+# 2. 安装ibus+拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
+RUN apt update && apt install ibus ibus-pinyin ibus-table-wubi ibus-table-emoji \
+    && echo 'export GTK_IM_MODULE="ibus"' >> $HOME/.bashrc \
+    && echo 'export QT_IM_MODULE="ibus"' >> $HOME/.bashrc \
+    && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
+# ibus-setup -> 缺省的ctrl+space会被主机拦截，改为ctrl+alt+space即可
 
 ######### END Customize Container ###########
 
@@ -70,5 +25,5 @@ WORKDIR $HOME
 RUN mkdir -p $HOME && chown -R 1000:0 $HOME
 
 USER 1000
-
+ENTRYPOINT ["start.sh"]
 CMD ["--tail-log"]
