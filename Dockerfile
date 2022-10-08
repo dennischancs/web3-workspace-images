@@ -33,7 +33,7 @@ RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/sr
 # Install Edge Browser
 RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/edge/install_edge.sh | bash
 # Install Brave Browser
-RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/brave/install_brave.sh | bash
+# RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/brave/install_brave.sh | bash
 # Install Tor Browser
 RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/torbrowser/install_torbrowser.sh | bash
 
