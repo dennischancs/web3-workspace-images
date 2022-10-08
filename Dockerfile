@@ -24,6 +24,8 @@ RUN apt-get update \
     && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
     && rm -rf /var/lib/apt/list/*
 
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/tools/install_tools_deluxe.sh | bash
+
 RUN chown 1000:0 $HOME
 
 ENV HOME /home/kasm-user
