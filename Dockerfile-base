@@ -18,8 +18,8 @@ ENV INST_SCRIPTS $STARTUPDIR/install
 
 ### Building an Image with sudo
 # add sudo command
-RUN apt-get update \
-    && apt-get install -y sudo \
+RUN apt update --yes \
+    && apt install --yes --no-install-recommends sudo \
     && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
     && rm -rf /var/lib/apt/list/*
 

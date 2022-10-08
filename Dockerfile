@@ -8,7 +8,8 @@ USER root
 RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 # 2. 安装ibus+拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
-RUN apt update && apt install ibus ibus-pinyin ibus-table-wubi ibus-table-emoji \
+RUN apt update --yes \
+    && apt install --yes --no-install-recommends ibus ibus-pinyin ibus-table-wubi ibus-table-emoji \
     && echo 'export GTK_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export QT_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
@@ -24,6 +25,8 @@ ENV HOME /home/kasm-user
 WORKDIR $HOME
 RUN mkdir -p $HOME && chown -R 1000:0 $HOME
 
+COPY start.sh /usr/bin/start.sh
+
 USER 1000
-ENTRYPOINT ["start.sh"]
+ENTRYPOINT ["/usr/bin/start.sh"]
 CMD ["--tail-log"]
