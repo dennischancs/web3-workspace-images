@@ -25,3 +25,10 @@ jobs:
           context: .
           push: true
           tags: dennischancs/web3-workspace-images:ubuntu-22.04
+      -
+        name: Update repo description
+        uses: peter-evans/dockerhub-description@v3.1.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: dennischancs/web3-workspace-images
