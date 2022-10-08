@@ -24,7 +24,44 @@ RUN apt-get update \
     && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
     && rm -rf /var/lib/apt/list/*
 
+# Install Tools
 RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/tools/install_tools_deluxe.sh | bash
+# Install Utilities
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/misc/install_tools.sh | bash
+
+# -- 浏览器 --
+# Install Edge Browser
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/edge/install_edge.sh | bash
+# Install Brave Browser
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/brave/install_brave.sh | bash
+# Install Tor Browser
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/torbrowser/install_torbrowser.sh | bash
+
+
+# ### docker容器中只有开发环境、远程工具 ---
+# -- code --
+# Install Sublime Text
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/sublime_text/install_sublime_text.sh | bash
+
+# Install Visual Studio Code
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/vs_code/install_vs_code.sh | bash
+
+# Install Postman
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/postman/install_postman.sh | bash
+
+# -- remote --
+# Install Remmina
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/remmina/install_remmina.sh  | bash
+
+# Install Ansible
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/ansible/install_ansible.sh  | bash
+
+# Install Terraform
+RUN curl https://raw.githubusercontent.com/kasmtech/workspaces-images/develop/src/ubuntu/install/terraform/install_terraform.sh  | bash
+
+######### END Customize Container ###########
+
+RUN $STARTUPDIR/set_user_permission.sh $HOME
 
 RUN chown 1000:0 $HOME
 
