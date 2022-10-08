@@ -15,18 +15,13 @@ RUN apt update --yes \
     && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
 # ibus-setup -> 缺省的ctrl+space会被主机拦截，改为ctrl+alt+space即可
 
+COPY start.sh /usr/bin/start.sh
+RUN chmod +x /usr/bin/start.sh
+
 ######### END Customize Container ###########
 
-RUN $STARTUPDIR/set_user_permission.sh $HOME
-
-RUN chown 1000:0 $HOME
-
-ENV HOME /home/kasm-user
-WORKDIR $HOME
-RUN mkdir -p $HOME && chown -R 1000:0 $HOME
-
-COPY start.sh /usr/bin/start.sh
+RUN $STARTUPDIR/set_user_permission.sh $HOME \
+    && chown -R 1000:0 $HOME
 
 USER 1000
 ENTRYPOINT ["/usr/bin/start.sh"]
-CMD ["--tail-log"]
