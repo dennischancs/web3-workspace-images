@@ -16,12 +16,14 @@ RUN apt update --yes \
     && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
 ## 配置rime词表
 RUN wget https://raw.githubusercontent.com/dennischancs/web3-workspace-images/main/tools/ibus-rime/rime.tar.gz \
+    && mkdir -p $HOME/.config/ibus \
     && rm -rf $HOME/.config/ibus/rime \
     && tar -xzf rime.tar.gz -C $HOME/.config/ibus/ \
     && rm -f rime.tar.gz 
 
 ## 配置 ibus-setup -> 缺省的ctrl+space切换输入法快捷键，在vnc下会被主机拦截，改为ctrl+alt+space即可
 RUN wget https://raw.githubusercontent.com/dennischancs/web3-workspace-images/main/tools/ibus-rime/user \
+    && mkdir -p $HOME/.config/dconf \
     && mv -f user $HOME/.config/dconf/ \
     && chmod 644 $HOME/.config/dconf/user
 
