@@ -5,11 +5,11 @@ USER root
 
 ######### Customize Container Here ###########
 # 1. 换国内源
-RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+# RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
 # 2. 安装ibus+rime拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
 RUN apt update --yes \
-    && apt install --yes --no-install-recommends ibus ibus--rime \
+    && apt install --yes ibus--rime \
     && echo 'export GTK_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export QT_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
