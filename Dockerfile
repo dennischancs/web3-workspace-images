@@ -7,9 +7,9 @@ USER root
 # 1. 换国内源
 RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
-# 2. 安装ibus+拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
+# 2. 安装ibus+rime拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
 RUN apt update --yes \
-    && apt install --yes --no-install-recommends ibus ibus-pinyin ibus-table-wubi ibus-table-emoji \
+    && apt install --yes --no-install-recommends ibus ibus--rime \
     && echo 'export GTK_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export QT_IM_MODULE="ibus"' >> $HOME/.bashrc \
     && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
@@ -24,4 +24,4 @@ RUN $STARTUPDIR/set_user_permission.sh $HOME \
     && chown -R 1000:0 $HOME
 
 USER 1000
-ENTRYPOINT ["/usr/bin/start.sh"]
+# ENTRYPOINT ["/usr/bin/start.sh"]
