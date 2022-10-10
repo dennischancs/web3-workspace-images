@@ -16,10 +16,9 @@ ENV INST_SCRIPTS $STARTUPDIR/install
 
 ######### Customize Container Here ###########
 
-### Building an Image with sudo
-# add sudo command
+### add sudo
 RUN apt update --yes \
-    && apt install --yes --no-install-recommends sudo \
+    && apt install --yes --no-install-recommends sudo\
     && echo 'kasm-user ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
     && rm -rf /var/lib/apt/list/*
 

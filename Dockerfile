@@ -7,14 +7,14 @@ USER root
 # 1. 换国内源
 RUN sed -i 's/\/\/.*ubuntu.com/\/\/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
-# 2. 安装ibus-rime拼音/五笔码表。不安装sogou，fcitx等，均与xfce兼容性不佳
-## 安装ibus-rime框架
+
+### add ibus-rime。不安装sogou，fcitx等，均与xfce兼容性不佳
 RUN apt update --yes \
-    && apt install --yes ibus-rime \
-    && echo 'export GTK_IM_MODULE="ibus"' >> $HOME/.bashrc \
-    && echo 'export QT_IM_MODULE="ibus"' >> $HOME/.bashrc \
-    && echo 'export XMODIFIERS="@im=ibus"' >> $HOME/.bashrc
-## 配置rime词表
+    && apt install --yes --no-install-recommends ibus-rime \
+    && rm -rf /var/lib/apt/list/*
+
+
+# 2. 配置rime词表：四叶草拼音+极点五笔
 RUN wget https://raw.githubusercontent.com/dennischancs/web3-workspace-images/main/tools/ibus-rime/rime.tar.gz \
     && mkdir -p $HOME/.config/ibus \
     && rm -rf $HOME/.config/ibus/rime \
@@ -27,13 +27,13 @@ RUN wget https://raw.githubusercontent.com/dennischancs/web3-workspace-images/ma
     && mv -f user $HOME/.config/dconf/ \
     && chmod 644 $HOME/.config/dconf/user
 
-COPY start.sh /usr/bin/start.sh
-RUN chmod +x /usr/bin/start.sh
-
+## autostart the ibus service for docker or wsl2
+RUN wget https://raw.githubusercontent.com/dennischancs/web3-workspace-images/main/tools/ibus-rime/ibus.sh \
+    && mv -f ibus.sh /etc/profile.d/
+    
 ######### END Customize Container ###########
 
 RUN $STARTUPDIR/set_user_permission.sh $HOME \
     && chown -R 1000:0 $HOME
 
 USER 1000
-# ENTRYPOINT ["/usr/bin/start.sh"]
